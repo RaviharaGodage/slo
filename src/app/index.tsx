@@ -1,98 +1,190 @@
-import * as Device from 'expo-device';
-import { Platform, StyleSheet } from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
+import { Ionicons } from "@expo/vector-icons";
+import { useState } from "react";
+import {
+  SafeAreaView,
+  StatusBar,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+} from "react-native";
 
-import { AnimatedIcon } from '@/components/animated-icon';
-import { HintRow } from '@/components/hint-row';
-import { ThemedText } from '@/components/themed-text';
-import { ThemedView } from '@/components/themed-view';
-import { WebBadge } from '@/components/web-badge';
-import { BottomTabInset, MaxContentWidth, Spacing } from '@/constants/theme';
+export default function Profile() {
+  const [points, setPoints] = useState(0);
 
-function getDevMenuHint() {
-  if (Platform.OS === 'web') {
-    return <ThemedText type="small">use browser devtools</ThemedText>;
-  }
-  if (Device.isDevice) {
-    return (
-      <ThemedText type="small">
-        shake device or press <ThemedText type="code">m</ThemedText> in terminal
-      </ThemedText>
-    );
-  }
-  const shortcut = Platform.OS === 'android' ? 'cmd+m (or ctrl+m)' : 'cmd+d';
+  const addPoint = () => {
+    setPoints(points + 1);
+  };
+
   return (
-    <ThemedText type="small">
-      press <ThemedText type="code">{shortcut}</ThemedText>
-    </ThemedText>
-  );
-}
+    <SafeAreaView style={styles.container}>
+      <StatusBar barStyle="light-content" backgroundColor="#000000" />
 
-export default function HomeScreen() {
-  return (
-    <ThemedView style={styles.container}>
-      <SafeAreaView style={styles.safeArea}>
-        <ThemedView style={styles.heroSection}>
-          <AnimatedIcon />
-          <ThemedText type="title" style={styles.title}>
-            Welcome to&nbsp;Expo
-          </ThemedText>
-        </ThemedView>
+      {/* Header */}
+      <View style={styles.header}>
+        <Text style={styles.headerTitle}>My Profile</Text>
+      </View>
 
-        <ThemedText type="code" style={styles.code}>
-          get started
-        </ThemedText>
+      {/* Main Content */}
+      <View style={styles.content}>
+        {/* Profile Picture */}
+        <View style={styles.profileContainer}>
+          <View style={styles.profileCircle}>
+            <Text style={styles.profileEmoji}>👨🏻‍💼</Text>
+          </View>
 
-        <ThemedView type="backgroundElement" style={styles.stepContainer}>
-          <HintRow
-            title="Try editing"
-            hint={<ThemedText type="code">src/app/index.tsx</ThemedText>}
-          />
-          <HintRow title="Dev tools" hint={getDevMenuHint()} />
-          <HintRow
-            title="Fresh start"
-            hint={<ThemedText type="code">npm run reset-project</ThemedText>}
-          />
-        </ThemedView>
+          {/* Green Tick */}
+          <View style={styles.tickContainer}>
+            <Ionicons name="checkmark" size={34} color="#00e600" />
+          </View>
+        </View>
 
-        {Platform.OS === 'web' && <WebBadge />}
-      </SafeAreaView>
-    </ThemedView>
+        {/* Line */}
+        <View style={styles.line} />
+
+        {/* Name */}
+        <Text style={styles.label}>Name</Text>
+        <Text style={styles.value}>Ravihara</Text>
+
+        {/* Email */}
+        <Text style={styles.label}>Email</Text>
+
+        <View style={styles.row}>
+          <Ionicons name="mail" size={20} color="#000" />
+          <Text style={styles.valueEmail}>sadeepravihara00@gmail.com</Text>
+        </View>
+
+        {/* Points */}
+        <Text style={styles.label}>Points</Text>
+
+        <View style={styles.row}>
+          <Ionicons name="star" size={20} color="#000" />
+          <Text style={styles.points}>{points}</Text>
+        </View>
+      </View>
+
+      {/* Plus Button */}
+      <TouchableOpacity
+        style={styles.plusButton}
+        onPress={addPoint}
+        activeOpacity={0.7}
+      >
+        <Ionicons name="add" size={30} color="#fff" />
+      </TouchableOpacity>
+    </SafeAreaView>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: 'center',
-    flexDirection: 'row',
+    backgroundColor: "#f7f7f7",
   },
-  safeArea: {
-    flex: 1,
-    paddingHorizontal: Spacing.four,
-    alignItems: 'center',
-    gap: Spacing.three,
-    paddingBottom: BottomTabInset + Spacing.three,
-    maxWidth: MaxContentWidth,
+
+  header: {
+    height: 65,
+    backgroundColor: "#000",
+    justifyContent: "center",
+    alignItems: "center",
   },
-  heroSection: {
-    alignItems: 'center',
-    justifyContent: 'center',
-    flex: 1,
-    paddingHorizontal: Spacing.four,
-    gap: Spacing.four,
+
+  headerTitle: {
+    color: "#fff",
+    fontSize: 18,
+    fontWeight: "bold",
   },
-  title: {
-    textAlign: 'center',
+
+  content: {
+    paddingHorizontal: 18,
+    paddingTop: 18,
   },
-  code: {
-    textTransform: 'uppercase',
+
+  profileContainer: {
+    alignItems: "center",
+    justifyContent: "center",
+    height: 145,
   },
-  stepContainer: {
-    gap: Spacing.three,
-    alignSelf: 'stretch',
-    paddingHorizontal: Spacing.three,
-    paddingVertical: Spacing.four,
-    borderRadius: Spacing.four,
+
+  profileCircle: {
+    width: 135,
+    height: 135,
+    borderRadius: 70,
+    backgroundColor: "#fff",
+    borderWidth: 1,
+    borderColor: "#dce7ed",
+    justifyContent: "center",
+    alignItems: "center",
+  },
+
+  profileEmoji: {
+    fontSize: 70,
+  },
+
+  tickContainer: {
+    position: "absolute",
+    right: 82,
+    bottom: 8,
+    backgroundColor: "#fff",
+    borderRadius: 20,
+  },
+
+  line: {
+    height: 2,
+    backgroundColor: "#222",
+    marginTop: 10,
+    marginBottom: 17,
+  },
+
+  label: {
+    fontSize: 18,
+    fontWeight: "bold",
+    color: "#111",
+    marginTop: 0,
+    marginBottom: 6,
+  },
+
+  value: {
+    fontSize: 18,
+    color: "#333",
+    marginBottom: 22,
+  },
+
+  row: {
+    flexDirection: "row",
+    alignItems: "center",
+    marginBottom: 22,
+  },
+
+  valueEmail: {
+    fontSize: 18,
+    color: "#333",
+    marginLeft: 10,
+  },
+
+  points: {
+    fontSize: 18,
+    color: "#333",
+    marginLeft: 10,
+  },
+
+  plusButton: {
+    position: "absolute",
+    right: 18,
+    bottom: 18,
+    width: 50,
+    height: 50,
+    borderRadius: 30,
+    backgroundColor: "#000",
+    justifyContent: "center",
+    alignItems: "center",
+
+    elevation: 6,
+    shadowColor: "#000",
+    shadowOpacity: 0.3,
+    shadowRadius: 5,
+    shadowOffset: {
+      width: 0,
+      height: 3,
+    },
   },
 });
